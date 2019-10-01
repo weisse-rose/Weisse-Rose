@@ -1,0 +1,41 @@
+---
+title: "wr"
+output: html_notebook
+---
+```{r Hochladen der Listen des Netzwerks}
+
+library(igraph)
+# load raw edges data ----
+edgelist <- read.csv("https://raw.githubusercontent.com/weisse-rose/Weisse-Rose/master/edgelist.csv",header = TRUE, sep = ',', stringsAsFactors = FALSE)
+
+# load raw nodes data ----
+nodelist <- read.csv("https://raw.githubusercontent.com/weisse-rose/Weisse-Rose/master/nodelist.csv",header = TRUE, sep = ',', stringsAsFactors = FALSE)
+
+# create network ----
+edges <-  as.matrix(edgelist)
+nodes <- as.matrix(nodelist)
+wr <-  graph_from_data_frame(d=edges, directed=F)
+plot(wr)
+```
+
+```{r Auswahl Edge-Attribute}
+edge.attributes(wr)$relationship
+edge.attributes(wr)$time
+```
+
+```{r Visualisierung nach Attribut time}
+# setzt den Wert rot für alle Werte 1 = vor Flugblatt 1
+E(wr)[E(wr)$time==1]$color<-"red"
+E(wr)[E(wr)$time!=1]$color<-"black"
+E(wr)[edge.width*10]
+plot(wr)
+wr
+```
+
+```{r Auswahl Node-Attribut}
+nodes.attributes(wr)$sex
+node.attributes(wr)$age
+node.attributes(wr)$hometown
+node.attributes(wr)$occupation
+```
+
